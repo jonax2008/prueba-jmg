@@ -1,0 +1,17 @@
+# Usa PHP 8.2 como base
+FROM php:8.2-cli
+
+# Instala extensiones requeridas para Doctrine y MySQL
+RUN docker-php-ext-install pdo pdo_mysql
+
+# Instala Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Configura el directorio de trabajo
+WORKDIR /var/www/html
+
+# Copia los archivos del proyecto
+COPY . .
+
+# Expone el puerto (opcional para pruebas HTTP)
+EXPOSE 8000
