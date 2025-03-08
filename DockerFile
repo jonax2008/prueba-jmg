@@ -4,6 +4,9 @@ FROM php:8.2-cli
 # Instala extensiones requeridas para Doctrine y MySQL
 RUN docker-php-ext-install pdo pdo_mysql
 
+# Habailita el uso de UUID
+RUN apt-get update && apt-get install -y uuid-runtime
+
 # Instala Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
