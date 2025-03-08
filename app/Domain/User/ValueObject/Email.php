@@ -9,7 +9,7 @@ final class Email {
 
     public function __construct(string $value) {
         $this->validate($value);
-        $this->value = $value;
+        $this->value = strtolower($value);
     }
 
     public function getValue(): string {
