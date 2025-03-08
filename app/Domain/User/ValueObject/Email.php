@@ -2,7 +2,7 @@
 
 namespace App\Domain\User\ValueObject;
 
-use InvalidArgumentException;
+use App\Domain\User\Exception\InvalidEmailException;
 
 final class Email {
     private string $value;
@@ -22,7 +22,7 @@ final class Email {
 
     public function validateEmailFormat($value): void {
         if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException("Invalid email format: $value");
+            throw new InvalidEmailException($value);
         }
     }
 
