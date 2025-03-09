@@ -2,6 +2,9 @@
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
+use App\Domain\User\Entity\User;
+use App\Infrastructure\Doctrine\Type\UserIdType;
+
 
 // Ruta a las entidades (DONDE ESTÁ User.php)
 $paths = [__DIR__ . '/../app/Domain']; // ⬅️ Cambiado a la carpeta de dominio
@@ -20,5 +23,7 @@ $dbParams = [
 $config = ORMSetup::createAnnotationMetadataConfiguration($paths, $isDevMode);
 
 $entityManager = EntityManager::create($dbParams, $config);
+$entityManager->getRepository(User::class);
+
 
 return $entityManager;
