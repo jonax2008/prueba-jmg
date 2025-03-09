@@ -38,4 +38,9 @@ final class Password {
     public function verify(string $plainPassword): bool {
         return password_verify($plainPassword, $this->hash);
     }
+
+    public function __toString(): string {
+        return $this->hash;
+    }
+    
 }
