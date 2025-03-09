@@ -19,22 +19,22 @@ class User {
      * @ORM\Id
      * @ORM\Column(type="string", unique=true)
      */
-    private UserId $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=100)
      */
-    private Name $name;
+    private $name;
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
      */
-    private Email $email;
+    private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private Password $password;
+    private $password;
 
     /**
      * @ORM\Column(type="datetime_immutable")
@@ -47,34 +47,34 @@ class User {
         Email $email,
         Password $password
     ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->email = $email;
-        $this->password = $password;
+        $this->id = (string) $id->getValue();
+        $this->name = $name->getValue();
+        $this->email = $email->getValue();
+        $this->password = $password->getHash();
         $this->createdAt = new DateTimeImmutable();
     }
 
     public function getId(): UserId {
-        return $this->id;
+        return new UserId($this->id);
     }
 
     public function getName(): Name {
-        return $this->name;
+        return new Name($this->name);
     }
 
     public function getEmail(): Email {
-        return $this->email;
+        return new Email($this->email);
     }
 
     public function getPassword(): Password {
-        return $this->password;
+        return new Password($this->password);
     }
 
     public function getCreatedAt(): DateTimeImmutable {
         return $this->createdAt;
     }
 
-    public function verifyPassword(string $plainPassword): bool {
-        return $this->password->verify($plainPassword);
-    }
+    // public function verifyPassword(string $plainPassword): bool {
+    //     return $this->password->verify($plainPassword);
+    // }
 }
