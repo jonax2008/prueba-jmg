@@ -2,19 +2,22 @@ version: '3.8'
 
 services:
   php:
-    image: php:8.2-cli
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: php_app
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
     depends_on:
-      - mysql
-    command: ["php", "-S", "0.0.0.0:8000", "-t", "public"]
+      mysql:
+        condition: service_healthy  # ⬅️ Esperar a que MySQL esté listo
     environment:
-      - DATABASE_URL=mysql://user:password@mysql:3307/app_db
+      DATABASE_URL: mysql://user:password@mysql:3306/app_db
 
   mysql:
-    image: mysql:8.0
+    image: mysql:5.7
+    command: --initialize-insecure  # ⬅️ Fuerza inicialización limpia
     container_name: mysql_db
     restart: always
     environment:
@@ -22,10 +25,16 @@ services:
       MYSQL_DATABASE: app_db
       MYSQL_USER: user
       MYSQL_PASSWORD: password
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
     ports:
-      - "3307:3307"
+      - "3307:3306"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data_new:/var/lib/mysql
+    healthcheck:  # ⬅️ Verifica que MySQL esté operativo
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 10s
+      retries: 10
 
 volumes:
-  mysql_data:
+  mysql_data_new:

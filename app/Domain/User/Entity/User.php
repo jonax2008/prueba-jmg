@@ -8,11 +8,37 @@ use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
 use DateTimeImmutable;
 
-final class User {
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="users")
+ */
+class User {
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="string", unique=true)
+     */
     private UserId $id;
+
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
     private Name $name;
+
+    /**
+     * @ORM\Column(type="string", length=100, unique=true)
+     */
     private Email $email;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private Password $password;
+
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private DateTimeImmutable $createdAt;
 
     public function __construct(
