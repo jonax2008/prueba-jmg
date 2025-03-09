@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: php_app
+    container_name: php_docfav
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
@@ -17,8 +17,7 @@ services:
 
   mysql:
     image: mysql:5.7
-    command: --initialize-insecure  # ⬅️ Fuerza inicialización limpia
-    container_name: mysql_db
+    container_name: mysql_docfav
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -29,7 +28,7 @@ services:
     ports:
       - "3307:3306"
     volumes:
-      - mysql_data_new:/var/lib/mysql
+      - mysql_docfav_data:/var/lib/mysql
     healthcheck:  # ⬅️ Verifica que MySQL esté operativo
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 5s
@@ -37,4 +36,4 @@ services:
       retries: 10
 
 volumes:
-  mysql_data_new:
+  mysql_docfav_data:
