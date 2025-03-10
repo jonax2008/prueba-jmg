@@ -33,6 +33,10 @@ migrate:
 createdb:
 	docker exec -it php_docfav php vendor/bin/doctrine orm:schema-tool:create
 
+# Crear tablas en la base de datos
+createtb:
+	docker exec -it php_docfav php vendor/bin/doctrine orm:schema-tool:create
+
 # Eliminar la base de datos
 dropdb:
 	docker exec -it php_docfav php vendor/bin/doctrine orm:schema-tool:drop --force
