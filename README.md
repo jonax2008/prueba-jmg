@@ -1,6 +1,6 @@
 # Ejecución del Proyecto
-
-Para ejecutar este proyecto, sigue los siguientes pasos:
+> [!NOTE]
+> Antes de realizar los pasos de ejecución debes clonar este repositorio y tener instalado Docker.
 
 ## Pasos para la Ejecución
 
