@@ -26,7 +26,7 @@ final class Email {
         }
     }
 
-    public function equals(Name $other): bool {
+    public function equals(Email $other): bool {
         return $this->value === $other->getValue();
     }
 }
