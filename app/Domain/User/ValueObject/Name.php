@@ -29,8 +29,8 @@ final class Name {
     }
 
     public function validateChars($value): void {
-        if (!preg_match('/^[a-zA-Z\s]+$/', $value)) {
-            throw new InvalidArgumentException('Invalid characters. Only letters and spaces are allowed.');
+        if (!preg_match('/^[a-zA-Z\sáéíóúÁÉÍÓÚ]+$/', $value)) {
+            throw new InvalidArgumentException('Invalid characters. Only letters, spaces, and accented characters are allowed.');
         }
     }
 

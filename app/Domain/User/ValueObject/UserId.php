@@ -8,6 +8,9 @@ final class UserId
 
     public function __construct(string $value)
     {
+        if (!preg_match('/^[a-f0-9]{13}$/', $value)) {
+            throw new \InvalidArgumentException('Invalid UserId value');
+        }
         $this->value = $value;
     }
 

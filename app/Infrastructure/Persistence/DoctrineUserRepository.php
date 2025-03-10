@@ -16,10 +16,12 @@ class DoctrineUserRepository implements UserRepositoryInterface
         $this->entityManager = $entityManager;
     }
 
-    public function save(User $user): void
+    public function save(User $user): ?User
     {
         $this->entityManager->persist($user);
         $this->entityManager->flush();
+
+        return $user;
     }
 
     public function findById(UserId $id): ?User
@@ -34,5 +36,10 @@ class DoctrineUserRepository implements UserRepositoryInterface
             $this->entityManager->remove($user);
             $this->entityManager->flush();
         }
+    }
+
+    public function findByEmail(string $email): ?User {
+        return $this->entityManager->getRepository(User::class)
+            ->findOneBy(['email' => $email]);
     }
 }

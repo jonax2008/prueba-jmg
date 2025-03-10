@@ -7,7 +7,8 @@ use App\Domain\User\ValueObject\UserId;
 
 interface UserRepositoryInterface
 {
-    public function save(User $user): void;
+    public function save(User $user): ? User;
     public function findById(UserId $id): ? User;
     public function delete(UserId $id): void;
+    public function findByEmail(string $email): ?User;
 }
