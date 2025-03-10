@@ -1,41 +1,53 @@
 version: '3.8'
 
+# Definimos los servicios de nuestra aplicación
+# En este caso, usamos PHP 7.4 y MySQL 5.7
+
 services:
+  # Servicio para el contenedor PHP
   php:
+    # Construcción del contenedor PHP a partir de un Dockerfile
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: .  # Directorio raíz del proyecto
+      dockerfile: Dockerfile  # Archivo Dockerfile para la construcción de la imagen
     ports:
-      - "8080:80"
-    container_name: php_docfav
+      - "8080:80"  # Exponemos el puerto 80 dentro del contenedor como el puerto 8080 en el host
+    container_name: php_docfav  # Nombre del contenedor para referencia
     volumes:
-      - .:/var/www/html
-    working_dir: /var/www/html
+      - .:/var/www/html  # Montaje del código fuente desde el directorio local al contenedor
+    working_dir: /var/www/html  # Directorio de trabajo dentro del contenedor
     depends_on:
+      # El contenedor PHP depende de MySQL y debe esperar hasta que esté listo
       mysql:
-        condition: service_healthy  # ⬅️ Esperar a que MySQL esté listo
+        condition: service_healthy  # Espera a que MySQL esté saludable
     environment:
+      # Variable de entorno para conectar PHP con MySQL
       DATABASE_URL: mysql://user:password@mysql:3306/app_db
 
+  # Servicio para el contenedor MySQL
   mysql:
+    # Usamos una imagen oficial de MySQL 5.7 desde Docker Hub
     image: mysql:5.7
-    container_name: mysql_docfav
-    restart: always
+    container_name: mysql_docfav  # Nombre del contenedor para referencia
+    restart: always  # Siempre reiniciar MySQL si se detiene
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: app_db
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      # Variables de entorno necesarias para configurar MySQL
+      MYSQL_ROOT_PASSWORD: root  # Contraseña del usuario root de MySQL
+      MYSQL_DATABASE: app_db  # Nombre de la base de datos por defecto
+      MYSQL_USER: user  # Usuario de MySQL
+      MYSQL_PASSWORD: password  # Contraseña para el usuario
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1  # Permitir contraseñas vacías (solo para desarrollo)
     ports:
-      - "3307:3306"
+      - "3307:3306"  # Exponemos el puerto 3306 de MySQL como 3307 en el host
     volumes:
-      - mysql_docfav_data:/var/lib/mysql
-    healthcheck:  # ⬅️ Verifica que MySQL esté operativo
+      - mysql_docfav_data:/var/lib/mysql  # Volumen para persistencia de datos de MySQL
+    healthcheck:
+      # Verificación de que MySQL esté operativo
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 10s
-      retries: 10
+      interval: 5s  # Intervalo entre chequeos
+      timeout: 10s  # Tiempo de espera máximo para el chequeo
+      retries: 10  # Número de intentos antes de marcar el servicio como no saludable
 
+# Definición de volúmenes para persistencia de datos
 volumes:
   mysql_docfav_data:
